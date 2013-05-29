@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>时尚</title>
+        <link rel="stylesheet" href="css/reset.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
+        <script src="js/jquery-1.9.1.min.js"></script>
+        <script src="js/jquery.tmpl.js"></script>
+        <script src="js/jquery.jplayer.min.js"></script>
+        
+        <script>
+            var ID = /\?id=(\w+)/.exec(document.URL)[1];
+            $(function(){
+                
+                $.getJSON("/get.mvc/getfilebyid?id="+ID,function(d){
+                    var image = d.AdImages[0],
+                        url = image['Guid']+image['FileFormat'];
+                    
+                    $('#compile1').tmpl({
+                        name:d.Name,
+                        pic:"/get.mvc/GetTheImage?width=267&height=200&fileName="+url,
+                        up:d['Praise'],
+                        down:d['Stamp']
+                    }).insertBefore($('#compile1'));
+                });
+                
+               /*
+                $('#compile1').tmpl({
+                                   name:"鑾枃钄�,
+                                   pic:"images/mowenwei.jpg",
+                                   up:123,
+                                   down:123
+                               }).insertBefore($('#compile1'));*/
+               
+                
+                
+                
+                $("#jquery_jplayer_1").jPlayer({
+                    
+                    ready: function () {
+                        $(this).jPlayer("setMedia", {
+                            mp3:"/contents/"+ID+".mp3"
+                        });
+                    },
+                    swfPath: "js",
+                    supplied: "mp3",
+                    wmode: "window",
+                    keyEnabled: true
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="page">
+            <div class="container">
+                <script id="compile1" type="text/x-jquery-tmpl">
+                    <div class="intro-box">
+                        <div class="intro-hd">
+                            <span class="icon-title"></span>
+                            <b>${name}</b>
+                        </div>
+                        <div class="intro-bd">
+                            <div class="pic">
+                                <img src="${pic}"/>
+                            </div>
+                        </div>
+                        <div class="intro-fd clearfix">
+                            <div class="up">
+                                <span class="icon-up"></span>
+                                <font>${up}</font>
+                            </div>
+                            <div class="down">
+                                <span class="icon-down"></span>
+                                <font>${down}</font>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </script>
+                <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+                <div id="jp_container_1" class="play-box jp-audio clearfix">
+                    <div class="jp-type-single">
+                        <div class="jp-gui jp-interface">
+                            <ul class="jp-controls">
+                                <li><a href="javascript:;" class="jp-play" tabindex="1"></a></li>
+                                <li><a href="javascript:;" class="jp-pause" tabindex="1"></a></li>
+                            </ul>
+                            <div class="jp-progress">
+                                <div class="jp-seek-bar">
+                                    <div class="jp-play-bar">
+                                        <div class="jp-play-during"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </body>
+</html>
